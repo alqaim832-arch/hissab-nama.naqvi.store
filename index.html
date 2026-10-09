@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>حساب نامہ</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b2419">
+<link rel="icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--bg:#07190f;--card:#113a2a;--card2:#17503a;--btn:#1d7050;--btn2:#2a9a6c;--cream:#f6ead0;--ink:#16261d;--line:#cdb988;--gold:#d4b86a;--txt:#f3ead2;--red:#9f3a2d;--inc:#2f8f5f;--exp:#b4503d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background-color:var(--bg);background-image:radial-gradient(ellipse at top,#14452f 0,var(--bg) 62%);background-attachment:fixed;color:var(--txt);font-family:'Alvi Nastaleeq','Alvi Nastaliq','Jameel Noori Nastaleeq','Noto Nastaliq Urdu',serif;line-height:2;padding:12px;max-width:1000px;margin:auto}
+h1{text-align:center;margin:.1em 0;line-height:2.2;color:var(--cream);text-shadow:0 2px 8px #0008}
+.head{display:flex;justify-content:center;align-items:center;gap:10px}
+.head h1{font-size:2.3rem}
+.orn{text-align:center;margin:4px 0;line-height:0}
+.orn svg{max-width:100%}
+.saved{text-align:center;font-size:.9rem;color:var(--gold)}
+.card{background:linear-gradient(180deg,var(--card),#0e3124);border:1px solid rgba(212,184,106,.35);border-radius:16px;padding:14px;margin:14px 0;box-shadow:0 6px 18px #0007}
+.ttl{color:var(--gold);margin:0 0 6px;font-size:1.15rem}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+button,select,input{font-family:inherit;font-size:1rem}
+button{background:linear-gradient(var(--btn2),var(--btn));color:#fff;border:1px solid #5fd3a244;border-radius:12px;padding:6px 14px;min-height:48px;cursor:pointer;line-height:1.8;box-shadow:0 2px 6px #0005}
+button:hover{filter:brightness(1.12)}
+button.alt{background:linear-gradient(#1f6148,#175039)}
+button.hl{background:var(--cream);color:var(--ink);font-weight:700;outline:3px solid var(--gold)}
+button.dan{background:linear-gradient(#b8473a,#8c2f25)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ffd77a}
+.tw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--cream)}
+table{border-collapse:collapse;width:100%;table-layout:fixed;background:var(--cream);color:var(--ink)}
+th{background:var(--card2);color:var(--cream);padding:4px 6px;border:1px solid #0e3124;border-bottom:3px solid var(--gold);line-height:1.9;font-weight:400;font-size:.95rem}
+td{border:1px solid var(--line);padding:2px 4px;text-align:center;line-height:1.9;word-break:break-word}
+tbody tr:nth-child(even) td{background:#efdfb8}
+td input[type=text],td input:not([type]),td input[type=number],td input[type=date]{width:100%;min-height:44px;border:0;background:transparent;color:var(--ink);text-align:center;font-size:.95rem}
+td input[type=date]{font-size:.8rem}
+td input[type=checkbox]{width:20px;height:20px;vertical-align:middle}
+#main td.cid,#main td.cin{background:#d3eddc}
+#main td.cxd,#main td.cex{background:#f6d6cf}
+#main td.cid input,#main td.cin input{color:#126b3f;font-weight:700}
+#main td.cxd input,#main td.cex input{color:#a12d1e;font-weight:700}
+#main td.cid input::placeholder,#main td.cin input::placeholder{color:#5f9a7a}
+#main td.cxd input::placeholder,#main td.cex input::placeholder{color:#c18178}
+#main td.cxd{border-right:8px solid var(--cream)}
+#main th:nth-child(3),#main th:nth-child(4){background:#1f7a4f}
+#main th:nth-child(5),#main th:nth-child(6){background:#a8402f}
+#main th:nth-child(5){border-right:8px solid var(--cream)}
+#dt th:first-child{width:56px}#dt td input[type=checkbox]{width:22px;height:22px}
+.foot{margin:18px 0 6px}
+#pl td{padding:4px;border:1px solid var(--line)}#pl input[type=checkbox]{width:22px;height:22px}.pi{color:#126b3f;font-weight:700}.pe{color:#a12d1e;font-weight:700}
+#main th:nth-child(1){width:62px}#main th:nth-child(2){width:128px}#main th:nth-child(4),#main th:nth-child(6){width:86px}#main th:nth-child(7){width:84px}#main th:nth-child(8){width:92px}
+.cbal{font-weight:700}
+.x,.x2{min-height:40px;padding:2px 9px;box-shadow:none}
+.x{background:var(--red)}.x2{background:#1f6148}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;text-align:center}
+.stats div{background:var(--card2);border-radius:12px;padding:4px 6px;border-top:4px solid var(--gold)}
+.stats .si{border-color:#3fc088}.stats .se{border-color:#d9705a}
+.stats b{display:block;font-size:1.35rem;color:var(--cream);line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:2px 10px}
+label{cursor:pointer}
+#toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--cream);color:var(--ink);padding:4px 18px;border-radius:12px;display:none;z-index:9;max-width:90%;text-align:center;box-shadow:0 4px 14px #0009}
+#modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:10;padding:16px}
+#modal div{background:var(--card);padding:18px;border-radius:14px;max-width:360px;text-align:center}
+.hide{display:none}
+input[type=date],input[type=number],select{background:var(--cream);color:var(--ink);border:1px solid var(--line);border-radius:8px;min-height:44px;padding:0 8px}
+.ntr{white-space:nowrap}
+.multi{margin-top:10px;background:rgba(0,0,0,.2);border:1px dashed var(--gold);border-radius:12px;padding:6px}
+@media(max-width:860px){
+ body{padding:8px}
+ .head h1{font-size:1.9rem}
+ .tw.m{border:0;border-radius:0;background:transparent}
+ #main thead{display:none}
+ #main,#main tbody,#main tr,#main td{display:block;width:auto}
+ #main{background:transparent}
+ #main tr{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"n d" "id xd" "in ex" "bal act";gap:4px 8px;background:var(--cream);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:8px;color:var(--ink);box-shadow:0 2px 8px #0005}
+ #main td,#main tbody tr:nth-child(even) td{border:0;padding:0;background:transparent}
+ #main td input[type=text],#main td input:not([type]),#main td input[type=number],#main td input[type=date]{background:#fff9e8;border:1px solid var(--line);border-radius:8px}
+ .cn{grid-area:n;text-align:right}.cd{grid-area:d}.cid{grid-area:id}.cxd{grid-area:xd}.cin{grid-area:in}.cex{grid-area:ex}.cbal{grid-area:bal;text-align:right}.cact{grid-area:act;text-align:left}
+ .cbal::before{content:'بیلنس: '}
+ #main td.cxd{border-right:0}
+ #main td.cid input,#main td.cin input{background:#d3eddc;border:2px solid #2f8f5f;color:#126b3f}
+ #main td.cxd input,#main td.cex input{background:#f6d6cf;border:2px solid #b4503d;color:#a12d1e}
+}
+
+th{background:#0b2f21;color:#fff;font-weight:700;border-color:#07190f}
+.dtab th.hi{background:#1b7a4a}.dtab th.he{background:#b03a2b}
+.grid label{background:var(--cream);color:var(--ink);font-weight:700;border-radius:10px;padding:2px 10px;margin:2px 0;border:1px solid var(--line)}
+.grid label input{margin-left:6px}
+.calbox{background:rgba(0,0,0,.18);border:1px solid rgba(212,184,106,.4);border-radius:14px;padding:10px;max-width:440px;margin:auto}
+.calhead{margin-bottom:8px}.calhead select{font-weight:700}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.wd{color:var(--gold);font-size:.78rem;line-height:1.7}
+.dy{min-height:42px;padding:0;border-radius:10px;background:var(--cream);color:var(--ink);font-weight:700;border:1px solid var(--line);box-shadow:none;position:relative;line-height:1.4;font-family:Arial,sans-serif}
+.dy.td{outline:2px solid var(--gold)}
+.dy.hv::after{content:'';position:absolute;bottom:4px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#2f8f5f}
+.dy.on{background:linear-gradient(var(--btn2),var(--btn));color:#fff;border-color:#fff}
+.dy.on.hv::after{background:#fff}
+.eform{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.eg{display:grid;gap:6px;padding:8px;border-radius:12px;border:2px solid}
+.eg.inc{background:#d3eddc;border-color:#2f8f5f}.eg.exp{background:#f6d6cf;border-color:#b4503d}
+.eg input[type=text],.eg input[type=number]{width:100%;min-height:46px;border:1px solid #0003;border-radius:8px;background:#fffdf5;text-align:center;font-size:1rem}
+.eg.inc input{color:#126b3f;font-weight:700}.eg.exp input{color:#a12d1e;font-weight:700}
+.dbox{background:rgba(0,0,0,.18);border:1px solid rgba(212,184,106,.35);border-radius:14px;padding:10px;margin:12px 0}
+.dbox.sel{border:2px solid var(--gold);box-shadow:0 0 0 3px rgba(212,184,106,.2)}
+.dhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.dhead b{color:var(--cream);font-size:1.2rem}.dcnt{color:var(--gold);font-size:.9rem}
+.dfoot{margin-top:6px;text-align:center;background:var(--cream);color:var(--ink);border-radius:10px;padding:2px 8px}
+.dtab th:nth-child(1){width:54px}.dtab th:nth-child(3),.dtab th:nth-child(5),.dtab th:nth-child(6){width:90px}.dtab th:nth-child(7){width:70px}
+.dtab td.t-id,.dtab td.t-in{background:#d3eddc}.dtab td.t-xd,.dtab td.t-ex{background:#f6d6cf}
+.dtab td.t-xd{border-right:8px solid var(--cream)}
+.dtab td.t-id input,.dtab td.t-in input{color:#126b3f;font-weight:700}
+.dtab td.t-xd input,.dtab td.t-ex input{color:#a12d1e;font-weight:700}
+.t-b{font-weight:700}
+@media(max-width:860px){
+ .eform{grid-template-columns:1fr 1fr;gap:6px}
+ .dtab thead{display:none}
+ .dtab,.dtab tbody,.dtab tr,.dtab td{display:block;width:auto}
+ .dtab{background:transparent}
+ .dtab tr{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"n a" "id xd" "in ex" "b b";gap:4px 8px;background:var(--cream);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:8px;color:var(--ink);box-shadow:0 2px 8px #0005}
+ .dtab td,.dtab tbody tr:nth-child(even) td{border:0!important;padding:0;background:transparent}
+ .t-n{grid-area:n;text-align:right}.t-a{grid-area:a;text-align:left}.t-id{grid-area:id}.t-xd{grid-area:xd}.t-in{grid-area:in}.t-ex{grid-area:ex}.t-b{grid-area:b;text-align:right}
+ .t-b::before{content:'بیلنس: '}
+ .dtab td.t-id input,.dtab td.t-in input{background:#d3eddc;border:2px solid #2f8f5f}
+ .dtab td.t-xd input,.dtab td.t-ex input{background:#f6d6cf;border:2px solid #b4503d}
+}
+
+.datebox{display:flex;justify-content:space-between;align-items:center;gap:10px;direction:ltr;background:var(--cream);color:var(--ink);border:2px solid var(--gold);border-radius:12px;min-height:54px;padding:4px 14px;font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:1.15rem;cursor:pointer;max-width:420px;margin:auto}
+.datebox:focus-visible{outline:3px solid #ffd77a}
+.cic{font-size:1.5rem}
+.calpop{direction:ltr;font-family:Arial,Helvetica,sans-serif;line-height:1.4;margin:10px auto 0;max-width:360px;background:rgba(0,0,0,.28);border:1px solid var(--gold);border-radius:14px;padding:10px}
+.calnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.calnav b{color:var(--cream);font-size:1.1rem}
+.calnav button{min-height:44px;min-width:48px;font-size:1.4rem;padding:0 10px}
+.guide{margin-top:10px;background:var(--cream);color:var(--ink);border-radius:12px;padding:8px 14px}
+.guide ol{margin:0;padding:0 22px}.guide li{margin:6px 0;line-height:2.1}
+
+:root{--parrot:#6fd13a;--parrot2:#4cb21f}
+#calcard{text-align:center}
+#calcard .ttl{text-align:center}
+.datebox{display:inline-flex;max-width:none;margin:0;min-height:44px;font-size:1.05rem;padding:2px 12px}
+.cic{font-size:1.25rem}
+.calpop{text-align:left}
+.stats{grid-template-columns:repeat(4,1fr);gap:6px}
+.stats div{padding:2px 3px;font-size:.74rem;line-height:1.75;overflow-wrap:anywhere;border-top-width:3px}
+.stats b{font-size:.98rem;line-height:1.6;overflow-wrap:anywhere}
+.stats .si{border-color:var(--parrot)}
+@media(min-width:620px){.stats div{font-size:.95rem;padding:4px 8px}.stats b{font-size:1.3rem}}
+.appsrow{flex-wrap:nowrap;gap:6px}
+.appsrow button{flex:1 1 0;min-width:0;min-height:40px;padding:2px 6px;font-size:.85rem;white-space:nowrap;font-family:Arial,Helvetica,sans-serif}
+#eadd{background:linear-gradient(var(--parrot),var(--parrot2));color:#06210f;font-weight:700;border-color:#ffffff55}
+.dy.on{background:linear-gradient(var(--parrot),var(--parrot2));color:#06210f;border-color:#fff}
+.dy.on.hv::after{background:#06210f}
+.dtab th.hi{background:var(--parrot);color:#06210f}
+.eg.inc{border-color:var(--parrot2)}
+.datebox{border-color:var(--parrot2)}
+.dev{text-align:center;color:var(--cream);line-height:1.9}
+.dev .en{direction:ltr;font-family:Arial,Helvetica,sans-serif;font-size:.9rem;color:var(--gold)}
+@media(max-width:860px){.dtab td.t-id input,.dtab td.t-in input{border-color:var(--parrot2)}}
+#apps{background:none;border:0;box-shadow:none;padding:0;margin:8px 0}
+#apps .appsrow{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:max-content;max-width:100%;margin:0 auto;gap:8px}
+#apps .appsrow button{flex:none;min-height:38px;padding:2px 14px;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="head"><span class="brk" data-fl="1"></span><h1>حساب نامہ</h1><span class="brk"></span></div><div class="orn"></div>
+
+<div class="card" id="calcard">
+  <h3 class="ttl">📅 تاریخ</h3>
+  <div class="datebox" id="datebox" role="button" tabindex="0" aria-label="Open calendar"><span id="dtext"></span><span class="cic">📅</span></div>
+  <div class="calpop hide" id="calpop">
+    <div class="calnav"><button id="cprev" class="alt" aria-label="Previous month">‹</button><b id="ctitle"></b><button id="cnext" class="alt" aria-label="Next month">›</button></div>
+    <div class="calgrid" id="cal"></div>
+    <div class="row" style="margin-top:8px"><button id="today" class="alt">Today</button></div>
+  </div>
+</div>
+
+<div class="card" id="entry">
+  <h3 class="ttl">✍ نیا اندراج (Entry) — <span id="edate"></span></h3>
+  <div class="eform">
+    <div class="eg inc"><input id="fid" type="text" placeholder="آمدن کی تفصیل"><input id="fin" type="number" inputmode="decimal" placeholder="آمدن"></div>
+    <div class="eg exp"><input id="fxd" type="text" placeholder="خرچے کی تفصیل"><input id="fex" type="number" inputmode="decimal" placeholder="خرچہ"></div>
+  </div>
+  <div class="row"><button id="eadd">➕ اندراج محفوظ کریں</button></div>
+</div>
+
+<div class="orn"></div>
+<div class="card">
+  <div class="stats">
+    <div class="si">کل آمدن<b id="ti">0</b></div>
+    <div class="se">کل خرچہ<b id="te">0</b></div>
+    <div>باقی بیلنس<b id="tbal">0</b></div>
+    <div>کل اندراجات (Entries)<b id="tc">0</b></div>
+  </div>
+  <h3 class="ttl" style="margin-top:.6em">روزانہ کا حساب</h3>
+  <div id="days"></div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <button id="sumbtn">📊 سمری تیار کریں</button>
+    <button id="bk">💾 ڈیٹا محفوظ کریں / Backup</button>
+    <button id="rs">📂 Backup Restore</button>
+    <button id="ab" class="alt">🕘 خودکار Backups</button>
+    <button id="clr" class="dan">تمام ڈیٹا حذف کریں</button>
+    <input type="file" id="rsf" accept=".json,application/json" class="hide">
+  </div>
+  <div id="apanel" class="hide" style="margin-top:10px"></div>
+</div>
+
+<div class="card hide" id="panel">
+  <h3 class="ttl">کیا شامل کرنا ہے؟</h3>
+  <div class="grid" id="fields"></div>
+  <h3 class="ttl" style="margin-top:.4em">تاریخ کا انتخاب</h3>
+  <div class="row" style="justify-content:flex-start">
+    <select id="mode">
+      <option value="month">پورا مہینہ</option>
+      <option value="range">منتخب دن (سے تک)</option>
+      <option value="day">ایک دن</option>
+      <option value="sel">منتخب اندراجات (Entries) (دن کے خانے میں ✓ لگائیں)</option>
+    </select>
+    <input type="date" id="d1"><span id="dto" class="hide">تا</span><input type="date" id="d2" class="hide">
+  </div>
+  <h3 class="ttl" style="margin-top:.6em">شامل اندراجات (Entries) — غلط ہو تو ✓ لگا کر حذف کریں</h3>
+  <div class="tw" style="max-height:260px;overflow:auto"><table id="plist"><tbody id="pl"></tbody></table></div>
+  <div class="row" style="margin-top:8px"><button id="pdel" class="dan">🗑 منتخب اندراجات (Entries) حذف کریں</button></div>
+  <div class="row" style="margin-top:10px">
+    <button id="gpdf">📄 PDF بنائیں</button>
+    <button id="gjpg">🖼 JPEG بنائیں</button>
+    <button id="shbtn" class="alt">↗ شیئر کریں</button>
+  </div>
+  <div id="result" class="hide" style="margin-top:10px;text-align:center">
+    <img id="prev_img" alt="" style="max-width:100%;border-radius:8px" class="hide">
+    <div class="row"><button id="dl"></button></div>
+  </div>
+  <div id="shmenu" class="row hide" style="margin-top:10px">
+    <button data-s="wa">WhatsApp پر شیئر کریں</button>
+    <button data-s="fb">Facebook پر شیئر کریں</button>
+    <button data-s="tt">TikTok پر شیئر کریں</button>
+    <button data-s="other">دیگر Apps</button>
+    <button data-s="copy" class="alt">Copy</button>
+    <button data-s="download" class="alt">Download</button>
+  </div>
+</div>
+
+<div class="orn"></div><div class="card" id="apps">
+  <div class="row appsrow">
+    <button id="android">📱 Android</button>
+    <button id="win">💻 Windows</button>
+  </div>
+</div>
+
+<div class="card" id="guidecard">
+  <div class="row"><button id="gbtn">📖 ایپ استعمال کرنے کا طریقہ</button></div>
+  <div id="guide" class="hide guide">
+    <ol>
+      <li><b>تاریخ منتخب کریں:</b> سب سے اوپر تاریخ کے ڈبے یا 📅 آئیکن پر ٹیپ کریں۔ انگریزی کیلنڈر کھلے گا، اپنی مرضی کا دن چنیں۔ مہینہ بدلنے کے لیے کیلنڈر کے اندر ‹ › استعمال کریں، اور آج پر آنے کے لیے Today دبائیں۔</li>
+      <li><b>نیا اندراج (Entry):</b> آمدن ہو تو ہرے ڈبے میں تفصیل اور رقم لکھیں، خرچہ ہو تو لال ڈبے میں۔ پھر "اندراج محفوظ کریں" دبائیں۔ ایک ہی تاریخ پر جتنے چاہیں اندراجات (Entries) کریں۔</li>
+      <li><b>روزانہ کا حساب:</b> محفوظ ہوتے ہی اندراج نیچے اس تاریخ کے ڈبے میں چلا جاتا ہے اور اوپر فارم خالی ہو جاتا ہے۔ چلتی ہوئی تاریخ سب سے اوپر رہتی ہے اور پرانی تاریخیں نیچے جاتی ہیں۔ ہر ڈبے میں دن کی آمدن، خرچہ اور فرق نظر آتا ہے۔</li>
+      <li><b>غلطی ٹھیک کرنا:</b> نیچے کسی خانے میں تفصیل یا رقم بدلیں، یا ✕ سے وہ اندراج حذف کریں۔ پورا دن ہٹانا ہو تو "پورا دن حذف کریں" دبائیں۔ حذف سے پہلے تصدیق پوچھی جاتی ہے۔</li>
+      <li><b>خودکار محفوظ:</b> جو کچھ بھی لکھیں، وہ خود بخود محفوظ ہوتا رہتا ہے۔ ایپ بند کر کے دوبارہ کھولیں تو ڈیٹا واپس مل جاتا ہے۔</li>
+      <li><b>سمری:</b> "سمری تیار کریں" دبائیں، جو معلومات چاہیں چنیں، مدت چنیں (پورا مہینہ، منتخب دن، ایک دن یا منتخب اندراجات (Entries))، پھر PDF یا JPEG بنائیں۔ فائل Download ہو سکتی ہے یا شیئر کریں سے WhatsApp وغیرہ پر بھیجی جا سکتی ہے۔ سمری میں غلط اندراج ✓ لگا کر وہیں حذف بھی کیا جا سکتا ہے۔</li>
+      <li><b>Backup:</b> "ڈیٹا محفوظ کریں / Backup" سے پورا ڈیٹا فائل میں محفوظ کریں اور "Backup Restore" سے واپس لائیں۔ "خودکار Backups" میں پچھلے محفوظ نسخے بحال یا حذف ہو سکتے ہیں۔ مہینے میں ایک بار فائل والا Backup ضرور لیں۔</li>
+      <li><b>رازداری:</b> آپ کا ڈیٹا صرف اسی ڈیوائس میں رہتا ہے، کسی سرور پر نہیں جاتا اور نہ لاگ اِن چاہیے۔</li>
+    </ol>
+    <div class="dev" style="color:var(--ink);border-top:1px solid var(--line);margin-top:8px;padding-top:6px;line-height:1.35"><div class="en" style="color:#6b5a26;line-height:1.35">Copyright © 2026 Naqvi.store. All Rights Reserved.</div><div class="en" style="color:#6b5a26;line-height:1.35">Developed by Syed Turab Haider Naqvi</div></div>
+  </div>
+</div>
+
+
+<div id="toast"></div>
+<div id="modal"><div><p id="mmsg">کیا آپ واقعی تمام ڈیٹا حذف کرنا چاہتے ہیں؟</p><div class="row"><button class="dan" id="yes">ہاں، حذف کریں</button><button class="alt" id="no">نہیں</button></div></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const KEY='hisabnama_v1';
+const MU=['جنوری','فروری','مارچ','اپریل','مئی','جون','جولائی','اگست','ستمبر','اکتوبر','نومبر','دسمبر'];
+const ME=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const TODAY=ymd(new Date());
+const n=v=>parseFloat(v)||0;
+const f=x=>x.toLocaleString('en-US',{maximumFractionDigits:2});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dl=d=>{const p=d.split('-');return (+p[2])+' '+MU[p[1]-1]+' '+p[0]};
+const brk=(c,fl)=>`<svg width="34" height="100" viewBox="0 0 50 168" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><g ${fl?'transform="translate(50,0) scale(-1,1)"':''}><path d="M40 22C14 44 32 62 26 74C23 80 12 82 5 84C12 86 23 88 26 94C32 106 14 124 40 146"/><path d="M40 22C46 12 34 4 28 10C24 15 29 21 34 18"/><path d="M40 146C46 156 34 164 28 158C24 153 29 147 34 150"/><ellipse cx="46" cy="30" rx="4.5" ry="2" transform="rotate(35 46 30)" fill="${c}"/><ellipse cx="46" cy="138" rx="4.5" ry="2" transform="rotate(-35 46 138)" fill="${c}"/></g></svg>`;
+const orn=c=>{const h='<path d="M146 20C130 20 124 8 106 10C90 12 88 28 100 27C106 26 105 19 99 20"/><path d="M92 24C70 32 44 28 12 16"/><path d="M60 28C58 37 50 37 48 32"/><path d="M38 24C36 14 28 14 26 19"/>';
+  let fl='<circle cx="160" cy="20" r="3.5"/>';for(let a=0;a<360;a+=60)fl+=`<ellipse cx="160" cy="11" rx="3.6" ry="5.6" transform="rotate(${a} 160 20)"/>`;
+  return `<svg width="260" height="34" viewBox="0 0 320 40" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">${h}<g transform="translate(320,0) scale(-1,1)">${h}</g>${fl}</svg>`};
+function migrate(st){st.entries.forEach(e=>{if(e.desc!==undefined){if(n(e.exp)&&!n(e.inc))e.expDesc=e.expDesc||e.desc;else e.incDesc=e.incDesc||e.desc;delete e.desc}e.incDesc=e.incDesc||'';e.expDesc=e.expDesc||''});st.entries=st.entries.filter(e=>e.incDesc||e.expDesc||n(e.inc)||n(e.exp))}
+let S=null;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const fresh=!S||!Array.isArray(S.entries);
+if(fresh)S={entries:[],month:TODAY.slice(0,7),lastDate:TODAY,uid:1};
+migrate(S);
+const idb=()=>new Promise((res,rej)=>{const r=indexedDB.open('hisabnama',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const idbSet=j=>idb().then(d=>new Promise((res,rej)=>{const t=d.transaction('k','readwrite');t.objectStore('k').put(j,KEY);t.oncomplete=res;t.onerror=rej}));
+const idbGet=()=>idb().then(d=>new Promise((res,rej)=>{const q=d.transaction('k').objectStore('k').get(KEY);q.onsuccess=()=>res(q.result);q.onerror=rej}));
+const AK='hisabnama_auto';
+const getSnaps=()=>{try{return JSON.parse(localStorage.getItem(AK))||[]}catch(e){return[]}};
+const putSnaps=a=>{try{localStorage.setItem(AK,JSON.stringify(a.slice(0,10)))}catch(e){}};
+function autoSnap(force){
+  if(!S.entries.some(e=>e.incDesc||e.expDesc||n(e.inc)||n(e.exp)))return;
+  const a=getSnaps(),now=Date.now();
+  if(!force&&a.length&&now-a[0].t<600000)return;
+  a.unshift({t:now,d:JSON.parse(JSON.stringify(S))});putSnaps(a);
+}
+const save=()=>{const j=JSON.stringify(S);try{localStorage.setItem(KEY,j)}catch(e){}autoSnap();try{idbSet(j).catch(()=>{})}catch(e){}
+  const el=$('#saved');if(el)el.textContent='✓ ڈیٹا خودکار طور پر محفوظ ہوتا ہے — '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})};
+const sel=new Set();
+let lastFile=null;
+let toastT;
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>t.style.display='none',3500)}
+const WD=['اتوار','پیر','منگل','بدھ','جمعرات','جمعہ','ہفتہ'];
+const pad=x=>String(x).padStart(2,'0');
+const hasData=e=>e.incDesc||e.expDesc||n(e.inc)||n(e.exp);
+const inMonth=()=>S.entries.filter(e=>e.date.slice(0,7)===S.month);
+function setDate(d){S.lastDate=d;S.month=d.slice(0,7);save();render()}
+const dlEn=d=>{const p=d.split('-');return (+p[2])+' '+ME[p[1]-1]+' '+p[0]};
+let calOpen=false,cv=S.month;
+const shiftM=(c,k)=>{let y=+c.slice(0,4),m=+c.slice(5)-1+k;y+=Math.floor(m/12);m=((m%12)+12)%12;return y+'-'+pad(m+1)};
+function drawCal(){
+  $('#dtext').textContent=dlEn(S.lastDate);
+  $('#calpop').classList.toggle('hide',!calOpen);
+  if(!calOpen)return;
+  const [y,m]=cv.split('-').map(Number);
+  $('#ctitle').textContent=ME[m-1]+' '+y;
+  const first=new Date(y,m-1,1).getDay(),dim=new Date(y,m,0).getDate();
+  const have=new Set(S.entries.filter(hasData).map(e=>e.date));
+  let h=['Su','Mo','Tu','We','Th','Fr','Sa'].map(w=>`<div class="wd">${w}</div>`).join('');
+  for(let i=0;i<first;i++)h+='<div></div>';
+  for(let d=1;d<=dim;d++){const ds=y+'-'+pad(m)+'-'+pad(d);h+=`<button class="dy${ds===S.lastDate?' on':''}${ds===TODAY?' td':''}${have.has(ds)?' hv':''}" data-d="${ds}">${d}</button>`}
+  $('#cal').innerHTML=h;
+}
+function toggleCal(o){calOpen=o===undefined?!calOpen:o;if(calOpen)cv=S.lastDate.slice(0,7);drawCal()}
+$('#datebox').addEventListener('click',()=>toggleCal());
+$('#datebox').addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();toggleCal()}});
+$('#cprev').onclick=()=>{cv=shiftM(cv,-1);drawCal()};
+$('#cnext').onclick=()=>{cv=shiftM(cv,1);drawCal()};
+$('#cal').addEventListener('click',ev=>{const b=ev.target.closest('.dy');if(b){calOpen=false;setDate(b.dataset.d)}});
+$('#today').onclick=()=>{calOpen=false;setDate(TODAY)};
+document.addEventListener('click',ev=>{if(calOpen&&!ev.target.closest('#calcard'))toggleCal(false)});
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&calOpen)toggleCal(false)});
+function drawEntry(){
+  const d=S.draft||{};
+  $('#edate').textContent=dl(S.lastDate);
+  $('#fid').value=d.incDesc||'';$('#fin').value=d.inc||'';$('#fxd').value=d.expDesc||'';$('#fex').value=d.exp||'';
+}
+['fid','fin','fxd','fex'].forEach(id=>$('#'+id).addEventListener('input',()=>{S.draft={incDesc:$('#fid').value,inc:$('#fin').value,expDesc:$('#fxd').value,exp:$('#fex').value};save()}));
+function addEntry(){
+  const e={id:S.uid++,date:S.lastDate,incDesc:$('#fid').value.trim(),inc:$('#fin').value,expDesc:$('#fxd').value.trim(),exp:$('#fex').value};
+  if(!hasData(e)){toast('پہلے تفصیل یا رقم لکھیں');return}
+  S.entries.push(e);S.draft=null;save();render();toast('✓ اندراج '+dl(e.date)+' میں شامل ہو گیا');$('#fid').focus();
+}
+$('#eadd').onclick=addEntry;
+['fin','fex'].forEach(id=>$('#'+id).addEventListener('keydown',ev=>{if(ev.key==='Enter')addEntry()}));
+function rowHTML(e,i){
+  return `<tr data-id="${e.id}"><td class="t-n ntr"><label><input type="checkbox" class="sc" ${sel.has(e.id)?'checked':''}> ${i+1}</label></td><td class="t-id"><input type="text" class="di" placeholder="آمدن کی تفصیل" value="${esc(e.incDesc)}"></td><td class="t-in"><input type="number" inputmode="decimal" class="in" placeholder="آمدن" value="${esc(e.inc)}"></td><td class="t-xd"><input type="text" class="dx" placeholder="خرچے کی تفصیل" value="${esc(e.expDesc)}"></td><td class="t-ex"><input type="number" inputmode="decimal" class="ex" placeholder="خرچہ" value="${esc(e.exp)}"></td><td class="t-b bal"></td><td class="t-a ntr"><button class="x" title="حذف">✕</button></td></tr>`;
+}
+const chron=()=>inMonth().filter(hasData).map((e,i)=>[e,i]).sort((a,b)=>a[0].date<b[0].date?-1:a[0].date>b[0].date?1:a[1]-b[1]).map(x=>x[0]);
+function drawDays(){
+  const g={};chron().forEach(e=>(g[e.date]=g[e.date]||[]).push(e));
+  let ks=Object.keys(g).sort().reverse();
+  if(g[S.lastDate])ks=[S.lastDate,...ks.filter(k=>k!==S.lastDate)];
+  $('#days').innerHTML=ks.length?ks.map(k=>`<div class="dbox${k===S.lastDate?' sel':''}"><div class="dhead"><b>${dl(k)}</b><span class="dcnt">${g[k].length} اندراجات (Entries)</span><button class="x ddel" data-d="${k}">🗑 پورا دن حذف کریں</button></div><div class="tw m"><table class="dtab"><thead><tr><th>#</th><th class="hi">آمدن کی تفصیل</th><th class="hi">آمدن</th><th class="he">خرچے کی تفصیل</th><th class="he">خرچہ</th><th>بیلنس</th><th></th></tr></thead><tbody>${g[k].map(rowHTML).reverse().join('')}</tbody></table></div><div class="dfoot" data-f="${k}"></div></div>`).join(''):'<div class="saved">اس مہینے میں ابھی کوئی اندراج نہیں۔ اوپر تاریخ منتخب کر کے اندراج لکھیں۔</div>';
+  refreshNums();
+}
+function refreshNums(){
+  let b=0,ti=0,te=0,c=0;const bal={},day={};
+  chron().forEach(e=>{const i=n(e.inc),x=n(e.exp);ti+=i;te+=x;b+=i-x;c++;bal[e.id]=b;const d=day[e.date]||(day[e.date]=[0,0]);d[0]+=i;d[1]+=x});
+  document.querySelectorAll('.dtab tbody tr').forEach(tr=>{tr.querySelector('.bal').textContent=f(bal[tr.dataset.id]||0)});
+  Object.keys(day).forEach(k=>{const el=document.querySelector('.dfoot[data-f="'+k+'"]');if(el)el.innerHTML=`آمدن: <b class="pi">${f(day[k][0])}</b> &nbsp; خرچہ: <b class="pe">${f(day[k][1])}</b> &nbsp; دن کا فرق: <b>${f(day[k][0]-day[k][1])}</b>`});
+  $('#ti').textContent=f(ti);$('#te').textContent=f(te);$('#tbal').textContent=f(ti-te);$('#tc').textContent=c;
+}
+function render(){drawCal();drawEntry();drawDays();if($('#pl'))renderList()}
+$('#days').addEventListener('input',ev=>{
+  const tr=ev.target.closest('tr');if(!tr)return;
+  const e=S.entries.find(x=>x.id==tr.dataset.id);if(!e)return;
+  const c=ev.target.className;
+  if(c==='di')e.incDesc=ev.target.value;
+  else if(c==='dx')e.expDesc=ev.target.value;
+  else if(c==='in')e.inc=ev.target.value;
+  else if(c==='ex')e.exp=ev.target.value;
+  else return;
+  save();refreshNums();
+});
+$('#days').addEventListener('change',ev=>{
+  if(ev.target.className!=='sc')return;
+  const id=+ev.target.closest('tr').dataset.id;ev.target.checked?sel.add(id):sel.delete(id);
+});
+$('#days').addEventListener('click',ev=>{
+  const dd=ev.target.closest('.ddel');
+  if(dd){const k=dd.dataset.d,cnt=S.entries.filter(e=>e.date===k).length;
+    ask('اس دن کے '+cnt+' اندراجات (Entries) حذف ہو جائیں گے۔ کیا آپ واقعی حذف کرنا چاہتے ہیں؟',()=>{S.entries=S.entries.filter(e=>e.date!==k);save();render();toast('پورا دن حذف ہو گیا')});return}
+  const x=ev.target.closest('.x');if(!x)return;
+  const id=+x.closest('tr').dataset.id;S.entries=S.entries.filter(e=>e.id!==id);sel.delete(id);save();render();
+});
+
+/* Backup / restore / clear */
+async function saveBlob(blob,name){
+  try{const d=window.claude&&await claude.use('downloads');if(d){await d.save({filename:name,data:blob});return}}
+  catch(e){if(e&&e.code==='declined')return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
+}
+$('#bk').onclick=()=>saveBlob(new Blob([JSON.stringify({app:'HisabNama',version:1,exported:TODAY,data:S},null,1)],{type:'application/json'}),'HisabNama_Backup_'+TODAY+'.json');
+$('#rs').onclick=()=>$('#rsf').click();
+$('#rsf').onchange=async ev=>{
+  const fl=ev.target.files[0];if(!fl)return;
+  try{
+    const j=JSON.parse(await fl.text());const d=j.data||j;
+    if(!Array.isArray(d.entries))throw 0;
+    S={entries:d.entries.map(e=>({id:0,date:String(e.date||TODAY),desc:e.desc,incDesc:e.incDesc,expDesc:e.expDesc,inc:e.inc||'',exp:e.exp||''})),month:d.month||TODAY.slice(0,7),lastDate:d.lastDate||TODAY,uid:1};
+    S.entries.forEach(e=>e.id=S.uid++);migrate(S);sel.clear();save();render();toast('Backup بحال ہو گیا');
+  }catch(e){toast('یہ درست HisabNama backup فائل نہیں ہے')}
+  ev.target.value='';
+};
+let pend=null;
+function ask(msg,fn){$('#mmsg').textContent=msg;pend=fn;$('#modal').style.display='flex'}
+$('#no').onclick=()=>{$('#modal').style.display='none';pend=null};
+$('#yes').onclick=()=>{$('#modal').style.display='none';const fn=pend;pend=null;if(fn)fn()};
+$('#clr').onclick=()=>ask('کیا آپ واقعی تمام ڈیٹا حذف کرنا چاہتے ہیں؟',()=>{S={entries:[],month:TODAY.slice(0,7),lastDate:TODAY,uid:1};sel.clear();save();render();toast('تمام ڈیٹا حذف ہو گیا')});
+
+/* Summary panel */
+const FIELDS=[['date','تاریخ'],['incDesc','آمدن کی تفصیل'],['incAmt','آمدن کی رقم'],['expDesc','خرچے کی تفصیل'],['expAmt','خرچے کی رقم'],['bal','روزانہ بیلنس'],['totInc','کل آمدن'],['totExp','کل خرچہ'],['totBal','کل بیلنس'],['totCnt','کل اندراجات (Entries)']];
+$('#fields').innerHTML=FIELDS.map(x=>`<label><input type="checkbox" data-f="${x[0]}" checked> ${x[1]}</label>`).join('');
+$('#d1').value=$('#d2').value=TODAY;
+$('#sumbtn').onclick=()=>{renderList();$('#panel').classList.toggle('hide');$('#panel').scrollIntoView({behavior:'smooth'})};
+$('#mode').onchange=()=>{renderList();const m=$('#mode').value;$('#d1').classList.toggle('hide',m==='month'||m==='sel');$('#d2').classList.toggle('hide',m!=='range');$('#dto').classList.toggle('hide',m!=='range')};
+$('#mode').onchange();
+$('#d1').onchange=$('#d2').onchange=renderList;
+const on=k=>$('[data-f="'+k+'"]').checked;
+function getRows(){
+  const m=$('#mode').value,a=$('#d1').value,b=$('#d2').value;
+  let r=S.entries.filter(e=>(e.incDesc||e.expDesc||n(e.inc)||n(e.exp)));
+  if(m==='month')r=r.filter(e=>e.date.slice(0,7)===S.month);
+  else if(m==='range')r=r.filter(e=>e.date>=a&&e.date<=(b||a));
+  else if(m==='day')r=r.filter(e=>e.date===a);
+  else r=r.filter(e=>sel.has(e.id));
+  return r.map((e,i)=>[e,i]).sort((x,y)=>x[0].date<y[0].date?-1:x[0].date>y[0].date?1:x[1]-y[1]).map(x=>x[0]);
+}
+function renderList(){
+  const r=getRows();
+  $('#pl').innerHTML=r.length?r.map(e=>`<tr><td style="width:46px"><input type="checkbox" class="pc" data-id="${e.id}"></td><td style="width:34%">${dl(e.date)}</td><td>${esc(e.incDesc||e.expDesc||'—')}</td><td style="width:92px">${n(e.inc)?'<span class="pi">+'+f(n(e.inc))+'</span> ':''}${n(e.exp)?'<span class="pe">−'+f(n(e.exp))+'</span>':''}</td></tr>`).join(''):'<tr><td>منتخب حدود میں کوئی اندراج نہیں</td></tr>';
+}
+$('#pdel').onclick=()=>{
+  const ids=[...document.querySelectorAll('.pc:checked')].map(x=>+x.dataset.id);
+  if(!ids.length){toast('پہلے حذف کرنے والے اندراجات (Entries) پر ✓ لگائیں');return}
+  ask('کیا آپ '+ids.length+' منتخب اندراج حذف کرنا چاہتے ہیں؟',()=>{S.entries=S.entries.filter(e=>!ids.includes(e.id));ids.forEach(i=>sel.delete(i));save();render();toast('منتخب اندراجات (Entries) حذف ہو گئے')});
+};
+function renderSnaps(){
+  const a=getSnaps(),P=$('#apanel');
+  if(!a.length){P.innerHTML='<div class="saved">ابھی کوئی خودکار backup نہیں۔ کچھ اندراج لکھنے کے بعد خود بن جاتا ہے۔</div>';return}
+  P.innerHTML='<div class="tw"><table><tbody>'+a.map(x=>{const c=x.d.entries.filter(e=>e.incDesc||e.expDesc||n(e.inc)||n(e.exp)).length;return `<tr><td>${new Date(x.t).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</td><td style="width:90px">${c} اندراجات (Entries)</td><td style="width:170px"><button class="x2" data-a="r" data-t="${x.t}">بحال کریں</button> <button class="x" data-a="d" data-t="${x.t}">🗑</button></td></tr>`}).join('')+'</tbody></table></div><div class="row" style="margin-top:8px"><button class="dan" data-a="all">تمام خودکار backups حذف کریں</button></div>';
+}
+$('#ab').onclick=()=>{renderSnaps();$('#apanel').classList.toggle('hide')};
+$('#apanel').addEventListener('click',ev=>{
+  const b=ev.target.closest('button');if(!b)return;const t=+b.dataset.t,k=b.dataset.a;
+  if(k==='d')ask('یہ خودکار backup حذف کریں؟',()=>{putSnaps(getSnaps().filter(x=>x.t!==t));renderSnaps();toast('backup حذف ہو گیا')});
+  else if(k==='all')ask('تمام خودکار backups حذف کریں؟ (آپ کا موجودہ ڈیٹا نہیں ہٹے گا)',()=>{putSnaps([]);renderSnaps();toast('تمام خودکار backups حذف ہو گئے')});
+  else if(k==='r'){const x=getSnaps().find(y=>y.t===t);if(x)ask('موجودہ ڈیٹا کی جگہ یہ backup بحال کریں؟ (موجودہ ڈیٹا کا بھی backup بن جائے گا)',()=>{autoSnap(true);S=JSON.parse(JSON.stringify(x.d));migrate(S);sel.clear();save();render();renderSnaps();toast('backup بحال ہو گیا')})}
+});
+function periodText(){
+  const m=$('#mode').value,a=$('#d1').value,b=$('#d2').value;
+  if(m==='month')return MU[+S.month.slice(5)-1]+' '+S.month.slice(0,4);
+  if(m==='range')return dl(a)+' تا '+dl(b||a);
+  if(m==='day')return dl(a);
+  return 'منتخب اندراجات (Entries)';
+}
+function totals(r){let i=0,x=0;r.forEach(e=>{i+=n(e.inc);x+=n(e.exp)});return{i,x,b:i-x,c:r.length}}
+function summaryText(){const r=getRows(),t=totals(r);return 'حساب نامہ — '+periodText()+'\nکل آمدن: '+f(t.i)+'\nکل خرچہ: '+f(t.x)+'\nباقی بیلنس: '+f(t.b)+'\nکل اندراجات (Entries): '+t.c}
+function reportHTML(r){
+  const th='border:1px solid #d8c59b;padding:4px 8px;text-align:center;line-height:2.1;';
+  const cols=[];
+  if(on('date'))cols.push(['تاریخ',(e)=>dl(e.date)]);
+  if(on('incDesc'))cols.push(['آمدن کی تفصیل',e=>esc(e.incDesc)]);
+  if(on('incAmt'))cols.push(['آمدن',e=>n(e.inc)?f(n(e.inc)):'']);
+  if(on('expDesc'))cols.push(['خرچے کی تفصیل',e=>esc(e.expDesc)]);
+  if(on('expAmt'))cols.push(['خرچہ',e=>n(e.exp)?f(n(e.exp)):'']);
+  if(on('bal'))cols.push(['بیلنس',null]);
+  let bal=0;
+  const body=r.map(e=>{bal+=n(e.inc)-n(e.exp);return '<tr>'+cols.map(c=>'<td style="'+th+'">'+(c[1]?c[1](e):f(bal))+'</td>').join('')+'</tr>'}).join('');
+  const t=totals(r);const tt=[];
+  if(on('totInc'))tt.push(['کل آمدن',f(t.i)]);
+  if(on('totExp'))tt.push(['کل خرچہ',f(t.x)]);
+  if(on('totBal'))tt.push(['کل بیلنس',f(t.b)]);
+  if(on('totCnt'))tt.push(['کل اندراجات (Entries)',t.c]);
+  return '<div dir="rtl" style="display:flex;justify-content:center;align-items:center;gap:14px;font-size:34px;line-height:2.3;color:#0f3a2a">'+brk('#0f3a2a',1)+'<span>حساب نامہ</span>'+brk('#0f3a2a')+'</div><div dir="rtl" style="text-align:center;font-size:18px;line-height:2;margin-bottom:8px">'+periodText()+'</div>'
+  +(cols.length?'<table dir="rtl" style="width:100%;border-collapse:collapse;font-size:16px"><thead><tr>'+cols.map(c=>'<th style="'+th+'background:#17503a;color:#fff;font-weight:bold">'+c[0]+'</th>').join('')+'</tr></thead><tbody>'+body+'</tbody></table>':'')
+  +(tt.length?'<table dir="rtl" style="width:100%;border-collapse:collapse;font-size:17px;margin-top:14px"><tbody>'+tt.map(x=>'<tr><td style="'+th+'background:#e4cf9f;width:50%">'+x[0]+'</td><td style="'+th+'font-weight:bold">'+x[1]+'</td></tr>').join('')+'</tbody></table>':'')
+  +'<div style="text-align:center;margin-top:12px;line-height:0">'+orn('#8a7a4a')+'</div><div dir="rtl" style="text-align:center;font-size:12px;margin-top:8px;color:#5b5236">HisabNama — '+TODAY+'</div>';
+}
+async function makeCanvas(r){
+  const el=document.createElement('div');
+  el.style.cssText="position:fixed;left:-9999px;top:0;width:780px;background:#f5e6c8;color:#17261e;padding:24px;font-family:'Alvi Nastaleeq','Alvi Nastaliq','Jameel Noori Nastaleeq','Noto Nastaliq Urdu',serif";
+  el.innerHTML=reportHTML(r);document.body.appendChild(el);
+  try{if(document.fonts)await document.fonts.ready;return await html2canvas(el,{scale:2,backgroundColor:'#f5e6c8'})}
+  finally{el.remove()}
+}
+async function gen(type){
+  const r=getRows();
+  if(!r.length){toast('منتخب حدود میں کوئی اندراج نہیں');return null}
+  if(!window.html2canvas||(type==='pdf'&&!window.jspdf)){toast('ضروری library لوڈ نہیں ہو سکی؛ انٹرنیٹ چیک کریں');return null}
+  toast('تیار ہو رہا ہے…');
+  const cv=await makeCanvas(r);
+  const base='HisabNama_'+(($('#mode').value==='month')?ME[+S.month.slice(5)-1]+'_'+S.month.slice(0,4):($('#d1').value||TODAY));
+  let blob;
+  if(type==='jpg'){blob=await new Promise(res=>cv.toBlob(res,'image/jpeg',0.92))}
+  else{
+    const pdf=new window.jspdf.jsPDF('p','mm','a4');
+    const W=210,H=297,m=10,iw=W-2*m,ph=Math.floor(cv.width*(H-2*m)/iw);
+    let y=0,first=true;
+    while(y<cv.height){
+      const h=Math.min(ph,cv.height-y),c=document.createElement('canvas');c.width=cv.width;c.height=h;
+      const x=c.getContext('2d');x.fillStyle='#f5e6c8';x.fillRect(0,0,c.width,h);x.drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);
+      if(!first)pdf.addPage();
+      pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',m,m,iw,h*iw/cv.width);
+      y+=h;first=false;
+    }
+    blob=pdf.output('blob');
+  }
+  lastFile={blob,name:base+(type==='jpg'?'.jpg':'.pdf'),type};
+  $('#result').classList.remove('hide');
+  const im=$('#prev_img');
+  if(type==='jpg'){im.src=cv.toDataURL('image/jpeg',0.6);im.classList.remove('hide')}else im.classList.add('hide');
+  $('#dl').textContent='⬇ Download '+(type==='jpg'?'JPEG':'PDF');
+  toast('فائل تیار ہے: '+lastFile.name);
+  return lastFile;
+}
+$('#gpdf').onclick=()=>gen('pdf');
+$('#gjpg').onclick=()=>gen('jpg');
+$('#dl').onclick=()=>lastFile&&saveBlob(lastFile.blob,lastFile.name);
+$('#shbtn').onclick=()=>$('#shmenu').classList.toggle('hide');
+$('#shmenu').addEventListener('click',async ev=>{
+  const t=ev.target.dataset.s;if(!t)return;
+  if(t==='copy'){try{await navigator.clipboard.writeText(summaryText());toast('سمری copy ہو گئی')}catch(e){toast('Copy ممکن نہیں ہوا')}return}
+  if(!lastFile&&!(await gen('jpg')))return;
+  if(t==='download'){saveBlob(lastFile.blob,lastFile.name);return}
+  const file=new File([lastFile.blob],lastFile.name,{type:lastFile.blob.type});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file],title:'حساب نامہ',text:summaryText()});return}
+    catch(e){if(e&&e.name==='AbortError')return}
+  }
+  await saveBlob(lastFile.blob,lastFile.name);
+  if(t==='wa'){try{window.open('https://wa.me/?text='+encodeURIComponent(summaryText()),'_blank')}catch(e){}}
+  toast('اس ڈیوائس پر براہِ راست شیئر دستیاب نہیں؛ فائل محفوظ کی گئی، اب اسے اپنی app میں attach کریں');
+});
+
+/* Install / device */
+let dp=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e});
+/* ====== Download links: جب .exe / .apk تیار ہو جائیں تو یہاں ان کے لنک لکھ دیں ====== */
+const DL={win:'',android:''};   /* مثال: win:'https://naqvi.store/downloads/Hissab-Nama-Setup.exe' */
+function inst(os){
+  const u=DL[os==='a'?'android':'win'];
+  if(u){window.open(u,'_blank');return}
+  if(dp){dp.prompt();dp=null;return}
+  toast(os==='a'?'Android APK ابھی تیار نہیں۔ Chrome مینو میں "Add to Home screen / Install app" استعمال کریں۔':'Windows .exe ابھی تیار نہیں۔ Chrome یا Edge کے مینو میں "Install app" استعمال کریں۔');
+}
+$('#android').onclick=()=>inst('a');
+$('#win').onclick=()=>inst('w');
+const mob=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
+(mob?$('#android'):$('#win')).classList.add('hl');
+if(mob)$('#apps .row').prepend($('#android'));
+
+document.querySelectorAll('.brk').forEach(el=>el.innerHTML=brk('#f5e6c8',el.dataset.fl));
+document.querySelectorAll('.orn').forEach(el=>el.innerHTML=orn('#c9b27c'));
+(async()=>{
+  if(fresh){try{const j=await idbGet();if(j){const d=JSON.parse(j);if(d&&Array.isArray(d.entries)){S=d;migrate(S);toast('محفوظ شدہ ڈیٹا واپس مل گیا')}}}catch(e){}}
+  render();
+})();
+$('#gbtn').onclick=()=>{$('#guide').classList.toggle('hide');if(!$('#guide').classList.contains('hide'))$('#guide').scrollIntoView({behavior:'smooth',block:'nearest'})};
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

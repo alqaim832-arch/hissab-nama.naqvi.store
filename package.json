@@ -1,0 +1,29 @@
+{
+  "name": "hissab-nama",
+  "version": "1.0.0",
+  "description": "Hissab Nama",
+  "author": "Syed Turab Haider Naqvi",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "store.naqvi.hissabnama",
+    "productName": "Hissab Nama",
+    "files": [
+      "main.js",
+      "index.html",
+      "manifest.webmanifest",
+      "icon-512.png"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icon-512.png"
+    }
+  }
+}
